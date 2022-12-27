@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mis_labs/lab2/done.dart';
+import 'package:mis_labs/lab2/quiz.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,11 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Laboratory exercise 2',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Clothes Chooser'),
     );
   }
 }
@@ -29,11 +31,63 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final _questions = [
+    {
+      'question': 'Select accessory:',
+      'answer': ['Belt', 'Hat', 'Jewelry', 'Scarf', 'Eye-wear', 'Bag']
+    },
+    {
+      'question': 'Select top clothes:',
+      'answer': ['Hoodie', 'T-shirt', 'Shirt', 'Sweater']
+    },
+    {
+      'question': 'Select top clothes color:',
+      'answer': ['White', 'Black', 'Gray', 'Red', 'Green', 'Blue']
+    },
+    {
+      'question': 'Select bottom clothes:',
+      'answer': [
+        'Corduroy Trousers',
+        'Wool Trousers',
+        'Jeans',
+        'Cargo Pants',
+        'Linen Trousers',
+        'Slimline Joggers'
+      ]
+    },
+    {
+      'question': 'Select bottom color:',
+      'answer': ['White', 'Black', 'Gray', 'Red', 'Green', 'Blue']
+    },
+    {
+      'question': 'Select shoes:',
+      'answer': [
+        'Sneakers',
+        'Calf boots',
+        'Crocs',
+        'Oxfords',
+        'Huaraches',
+        'Riding boots',
+        'Slippers'
+      ]
+    },
+    {
+      'question': 'Select shoes color:',
+      'answer': ['White', 'Black', 'Gray', 'Red', 'Green', 'Blue']
+    }
+  ];
 
-  void _incrementCounter() {
+  int _questionIndex = 0;
+
+  void _nextQuestion() {
     setState(() {
-      _counter++;
+      _questionIndex += 1;
+    });
+  }
+
+  void _restartQuiz() {
+    setState(() {
+      _questionIndex = 0;
     });
   }
 
@@ -43,25 +97,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      body: _questionIndex < _questions.length
+          ? Quiz(_questions, _questionIndex, _nextQuestion)
+          : DoneScreen(_restartQuiz),
     );
   }
 }
